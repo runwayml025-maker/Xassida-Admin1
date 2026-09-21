@@ -299,18 +299,18 @@
         </main>
     </div>
 
-    <!-- Document Modal -->
+    <!-- Document Modal with Picture Preview -->
     <div id="docModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
         <div class="premium-card bg-white w-full max-w-lg p-6 rounded-2xl space-y-4 relative">
             <div class="flex justify-between items-center border-b pb-3">
                 <h3 class="font-bold text-lg text-emeraldPrimary">Driver Verification Documents</h3>
                 <button onclick="closeDocModal()" class="text-gray-500 hover:text-red-600 font-bold text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div id="docModalContent" class="space-y-3 text-sm">
-                <!-- Loaded dynamically -->
+            <div id="docModalContent" class="space-y-4 text-sm max-h-[70vh] overflow-y-auto">
+                <!-- Loaded dynamically with pictures -->
             </div>
-            <div class="text-right pt-2">
-                <button onclick="closeDocModal()" class="px-4 py-2 bg-emeraldPrimary text-white rounded-xl text-xs font-bold">Close</button>
+            <div class="text-right pt-2 border-t">
+                <button onclick="closeDocModal()" class="px-5 py-2.5 bg-emeraldPrimary text-white rounded-xl text-xs font-bold shadow-md hover:bg-emeraldDark">Close</button>
             </div>
         </div>
     </div>
@@ -440,6 +440,10 @@
                     const ratingStr = data.rating || `${ratingVal} ★`;
                     const license = data.license_number || data.license || 'Not Provided';
                     const idCard = data.id_card || data.cnic || 'Not Provided';
+                    
+                    // Image URLs if stored in Firestore
+                    const licenseImg = data.license_image || data.license_url || '';
+                    const idImg = data.id_image || data.cnic_url || '';
 
                     driversHTML += `
                         <tr class="hover:bg-emerald-50/50 transition duration-150">
@@ -456,7 +460,7 @@
                             <td class="py-4 px-5 font-black text-emeraldPrimary">$${earnings.toFixed(2)}</td>
                             <td class="py-4 px-5 font-bold text-goldAccent">${ratingStr}</td>
                             <td class="py-4 px-5">
-                                <button onclick="viewDocuments('${name}', '${license}', '${idCard}')" class="px-3 py-1.5 bg-surfaceGray border border-gray-300 text-emeraldPrimary rounded-lg text-xs font-bold hover:bg-emeraldLight transition">
+                                <button onclick="viewDocuments('${name}', '${license}', '${idCard}', '${licenseImg}', '${idImg}')" class="px-3 py-1.5 bg-surfaceGray border border-gray-300 text-emeraldPrimary rounded-lg text-xs font-bold hover:bg-emeraldLight transition">
                                     <i class="fa-solid fa-file-shield mr-1"></i> View Docs
                                 </button>
                             </td>
@@ -514,13 +518,22 @@
             }
         }
 
-        window.viewDocuments = function(name, license, idCard) {
-            const content = `
-                <p><strong>Driver Name:</strong> ${name}</p>
-                <p><strong>License Number:</strong> ${license}</p>
-                <p><strong>ID / CNIC Number:</strong> ${idCard}</p>
-                <div class="p-3 bg-surfaceGray rounded-xl border text-xs text-textMuted mt-2">
-                    <i class="fa-solid fa-circle-check text-emeraldPrimary mr-1"></i> Verification status synced securely with Firebase.
+        window.viewDocuments = function(name, license, idCard, licenseImg, idImg) {
+            let content = `
+                <div class="space-y-2 border-b pb-3">
+                    <p><strong>Driver Name:</strong> ${name}</p>
+                    <p><strong>License Number:</strong> ${license}</p>
+                    <p><strong>ID / CNIC Number:</strong> ${idCard}</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    <div>
+                        <p class="text-xs font-bold text-textMuted mb-1">License Image / Document</p>
+                        ${licenseImg ? `<img src="${licenseImg}" alt="License" class="w-full h-40 object-cover rounded-xl border border-gray-300 shadow-sm">` : `<div class="w-full h-40 bg-surfaceGray border border-dashed border-gray-300 rounded-xl flex items-center justify-center text-xs text-gray-400 font-medium">No License Picture Uploaded</div>`}
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-textMuted mb-1">ID Card / CNIC Picture</p>
+                        ${idImg ? `<img src="${idImg}" alt="ID Card" class="w-full h-40 object-cover rounded-xl border border-gray-300 shadow-sm">` : `<div class="w-full h-40 bg-surfaceGray border border-dashed border-gray-300 rounded-xl flex items-center justify-center text-xs text-gray-400 font-medium">No ID Card Picture Uploaded</div>`}
+                    </div>
                 </div>
             `;
             document.getElementById('docModalContent').innerHTML = content;
