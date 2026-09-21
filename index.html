@@ -438,12 +438,12 @@
                     const deliveries = data.completed_deliveries || 0;
                     const ratingVal = data.rating_num || 4.9;
                     const ratingStr = data.rating || `${ratingVal} ★`;
-                    const license = data.license_number || data.license || 'Not Provided';
-                    const idCard = data.id_card || data.cnic || 'Not Provided';
+                    const license = data.license_number || data.license || data.licence || 'Not Provided';
+                    const idCard = data.id_card || data.cnic || data.id_number || 'Not Provided';
                     
-                    // Image URLs if stored in Firestore
-                    const licenseImg = data.license_image || data.license_url || '';
-                    const idImg = data.id_image || data.cnic_url || '';
+                    // Checking multiple possible field names for images in Firestore
+                    const licenseImg = data.license_image || data.license_url || data.licence_img || data.license_photo || '';
+                    const idImg = data.id_image || data.cnic_url || data.cnic_img || data.id_photo || '';
 
                     driversHTML += `
                         <tr class="hover:bg-emerald-50/50 transition duration-150">
@@ -520,7 +520,7 @@
 
         window.viewDocuments = function(name, license, idCard, licenseImg, idImg) {
             let content = `
-                <div class="space-y-2 border-b pb-3">
+                <div class="space-y-1.5 border-b pb-3">
                     <p><strong>Driver Name:</strong> ${name}</p>
                     <p><strong>License Number:</strong> ${license}</p>
                     <p><strong>ID / CNIC Number:</strong> ${idCard}</p>
@@ -528,11 +528,11 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                     <div>
                         <p class="text-xs font-bold text-textMuted mb-1">License Image / Document</p>
-                        ${licenseImg ? `<img src="${licenseImg}" alt="License" class="w-full h-40 object-cover rounded-xl border border-gray-300 shadow-sm">` : `<div class="w-full h-40 bg-surfaceGray border border-dashed border-gray-300 rounded-xl flex items-center justify-center text-xs text-gray-400 font-medium">No License Picture Uploaded</div>`}
+                        ${licenseImg ? `<a href="${licenseImg}" target="_blank"><img src="${licenseImg}" alt="License" class="w-full h-40 object-cover rounded-xl border border-gray-300 shadow-sm hover:opacity-90 transition cursor-pointer"></a>` : `<div class="w-full h-40 bg-surfaceGray border border-dashed border-gray-300 rounded-xl flex items-center justify-center text-xs text-gray-400 font-medium">No License Picture Uploaded</div>`}
                     </div>
                     <div>
                         <p class="text-xs font-bold text-textMuted mb-1">ID Card / CNIC Picture</p>
-                        ${idImg ? `<img src="${idImg}" alt="ID Card" class="w-full h-40 object-cover rounded-xl border border-gray-300 shadow-sm">` : `<div class="w-full h-40 bg-surfaceGray border border-dashed border-gray-300 rounded-xl flex items-center justify-center text-xs text-gray-400 font-medium">No ID Card Picture Uploaded</div>`}
+                        ${idImg ? `<a href="${idImg}" target="_blank"><img src="${idImg}" alt="ID Card" class="w-full h-40 object-cover rounded-xl border border-gray-300 shadow-sm hover:opacity-90 transition cursor-pointer"></a>` : `<div class="w-full h-40 bg-surfaceGray border border-dashed border-gray-300 rounded-xl flex items-center justify-center text-xs text-gray-400 font-medium">No ID Card Picture Uploaded</div>`}
                     </div>
                 </div>
             `;
@@ -556,7 +556,7 @@
 
         window.saveDriverName = async function() {
             const uid = document.getElementById('editDriverUid').value;
-            const newName = document.getElementById('editDriverNameInput').value;
+            const newName = document.getElementById('editDriverNameInput'].value;
             if (!newName) return alert("Please enter a valid name.");
             try {
                 await updateDoc(doc(db, "users", uid), {
