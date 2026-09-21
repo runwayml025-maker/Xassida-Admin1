@@ -69,7 +69,7 @@
         <div class="absolute -top-32 -right-32 w-96 h-96 bg-goldAccent opacity-15 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-emerald-600 opacity-15 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div class="premium-card w-full max-w-md p-8 rounded-3xl relative shadow-2xl border border-white/10">
+        <div class="premium-card w-full max-w-md p-6 sm:p-8 rounded-3xl relative shadow-2xl border border-white/10">
             <div class="text-center mb-8">
                 <div class="w-16 h-16 bg-gradient-to-tr from-emeraldPrimary to-goldAccent rounded-2xl mx-auto flex items-center justify-center shadow-lg mb-4 text-white text-2xl font-bold">
                     <i class="fa-solid fa-truck-fast text-goldLight"></i>
@@ -111,14 +111,14 @@
                 </div>
             </form>
 
-            <!-- Forgot Password Form (Hidden by Default) -->
+            <!-- Forgot Password Form -->
             <form id="forgotForm" onsubmit="handleForgotPassword(event)" class="space-y-5 hidden">
                 <div>
                     <div class="flex items-center justify-between mb-2">
                         <label class="text-xs font-bold uppercase tracking-wider text-textMuted">Reset Password</label>
                         <button type="button" onclick="showLoginForm()" class="text-xs font-bold text-emeraldPrimary hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Login</button>
                     </div>
-                    <p class="text-xs text-textMuted mb-4">Enter your registered admin email address below. We will send you a secure link to reset your password.</p>
+                    <p class="text-xs text-textMuted mb-4">Enter your registered admin email address below to receive a secure password reset link.</p>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-emeraldPrimary"><i class="fa-solid fa-envelope"></i></span>
                         <input type="email" id="resetEmail" required value="xassidasn792@gmail.com" placeholder="xassidasn792@gmail.com" class="w-full pl-11 pr-4 py-3.5 bg-surfaceGray border border-gray-200 rounded-xl focus:outline-none focus:border-emeraldPrimary text-sm font-medium text-textDark transition">
@@ -138,22 +138,22 @@
     <!-- MAIN DASHBOARD -->
     <div id="mainDashboard" class="hidden flex-1 flex flex-col">
         <!-- Top Navbar -->
-        <header class="bg-emeraldPrimary text-white shadow-lg px-8 py-4 flex justify-between items-center sticky top-0 z-40 border-b border-emeraldDark">
-            <div class="flex items-center space-x-3.5">
-                <div class="w-12 h-12 bg-emeraldDark rounded-2xl flex items-center justify-center text-goldLight font-bold text-xl border border-emerald-700/40 shadow-inner">
+        <header class="bg-emeraldPrimary text-white shadow-lg px-4 sm:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4 sticky top-0 z-40 border-b border-emeraldDark">
+            <div class="flex items-center space-x-3.5 w-full sm:w-auto">
+                <div class="w-12 h-12 bg-emeraldDark rounded-2xl flex items-center justify-center text-goldLight font-bold text-xl border border-emerald-700/40 shadow-inner shrink-0">
                     <i class="fa-solid fa-truck-fast text-goldLight"></i>
                 </div>
                 <div>
-                    <h1 class="font-extrabold text-lg tracking-wide">Xassida SN Command Center</h1>
+                    <h1 class="font-extrabold text-base sm:text-lg tracking-wide">Xassida SN Command Center</h1>
                     <p class="text-xs text-emerald-100 font-medium"><i class="fa-solid fa-shield-check text-goldLight mr-1"></i> Strict 100% Online Payment Policy Active • AlyssaWarner.co</p>
                 </div>
             </div>
-            <div class="flex items-center space-x-4">
-                <div class="flex items-center space-x-2 bg-emeraldDark/80 px-4 py-2 rounded-xl border border-emerald-700/40 text-xs font-semibold text-emerald-50 shadow-sm">
+            <div class="flex items-center space-x-3 w-full sm:w-auto justify-end">
+                <div class="flex items-center space-x-2 bg-emeraldDark/80 px-3.5 py-2 rounded-xl border border-emerald-700/40 text-xs font-semibold text-emerald-50 shadow-sm">
                     <span class="w-2.5 h-2.5 rounded-full bg-goldAccent animate-pulse"></span>
-                    <span id="currentDateDisplay">Loading Date...</span>
+                    <span id="currentDateDisplay">Loading...</span>
                 </div>
-                <button onclick="handleLogout()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition shadow-md hover:scale-105 active:scale-95 flex items-center space-x-2">
+                <button onclick="handleLogout()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition shadow-md hover:scale-105 active:scale-95 flex items-center space-x-2 shrink-0">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Logout</span>
                 </button>
@@ -161,21 +161,27 @@
         </header>
 
         <!-- Main Content Container -->
-        <main class="flex-1 p-8 max-w-7xl mx-auto w-full space-y-8">
+        <main class="flex-1 p-4 sm:p-8 max-w-7xl mx-auto w-full space-y-6 sm:space-y-8">
             
-            <!-- Date Filter & Quick Audit Bar -->
+            <!-- Date Filter & PDF Export Bar -->
             <div class="premium-card p-5 rounded-2xl flex flex-wrap items-center justify-between gap-4">
-                <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-3 w-full sm:w-auto">
                     <label class="text-xs font-bold uppercase tracking-wider text-textMuted"><i class="fa-solid fa-calendar-days text-emeraldPrimary mr-2"></i> Audit Date:</label>
                     <input type="date" id="reportDate" onchange="fetchAnalyticsData()" class="px-4 py-2.5 bg-surfaceGray border border-gray-300 rounded-xl text-sm font-bold text-textDark focus:outline-none focus:border-emeraldPrimary">
                 </div>
-                <div class="text-xs text-emerald-900 font-medium bg-emeraldLight px-4 py-2 rounded-xl border border-emerald-200">
-                    <i class="fa-solid fa-circle-info mr-1 text-emeraldPrimary"></i> Daily auto-reset enabled. Select past dates for historical profit & expense audits.
+                <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-end">
+                    <div class="text-xs text-emerald-900 font-medium bg-emeraldLight px-4 py-2 rounded-xl border border-emerald-200 hidden md:block">
+                        <i class="fa-solid fa-circle-info mr-1 text-emeraldPrimary"></i> Filtered by selected date.
+                    </div>
+                    <button onclick="exportAuditPDF()" class="w-full sm:w-auto bg-gradient-to-r from-emeraldPrimary to-emeraldDark text-white px-5 py-2.5 rounded-xl text-xs font-bold transition shadow-md hover:scale-105 active:scale-95 flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-file-pdf text-goldLight"></i>
+                        <span>Download PDF Report</span>
+                    </button>
                 </div>
             </div>
 
             <!-- Financial Metrics Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Sales -->
                 <div class="premium-card p-6 rounded-2xl border-l-4 border-l-emeraldPrimary">
                     <div class="flex justify-between items-start">
@@ -230,7 +236,7 @@
                 <h3 class="text-base font-bold text-textDark mb-5 flex items-center">
                     <i class="fa-solid fa-layer-group text-emeraldPrimary mr-2.5 text-lg"></i> Category Breakdown (Selected Date)
                 </h3>
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                     <div class="p-4 bg-surfaceGray rounded-xl border border-gray-200 text-center premium-card">
                         <span class="text-xs text-textMuted font-bold uppercase">Car Rides</span>
                         <h4 id="catCar" class="text-2xl font-black text-emeraldPrimary mt-1">0</h4>
@@ -247,7 +253,7 @@
                         <span class="text-xs text-textMuted font-bold uppercase">Parcels</span>
                         <h4 id="catParcel" class="text-2xl font-black text-goldAccent mt-1">0</h4>
                     </div>
-                    <div class="p-4 bg-surfaceGray rounded-xl border border-gray-200 text-center premium-card">
+                    <div class="p-4 bg-surfaceGray rounded-xl border border-gray-200 text-center premium-card col-span-2 sm:col-span-1">
                         <span class="text-xs text-textMuted font-bold uppercase">Documents</span>
                         <h4 id="catDoc" class="text-2xl font-black text-goldAccent mt-1">0</h4>
                     </div>
@@ -256,21 +262,21 @@
 
             <!-- Riders & Drivers Performance Section -->
             <div class="premium-card p-6 rounded-2xl">
-                <div class="flex justify-between items-center mb-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                     <h3 class="text-base font-bold text-textDark flex items-center">
                         <i class="fa-solid fa-users-gear text-emeraldPrimary mr-2.5 text-lg"></i> Riders & Drivers Performance & Feedback
                     </h3>
                     <span class="text-xs emerald-badge font-bold px-3.5 py-1.5 rounded-full">Real-time Firestore Sync</span>
                 </div>
                 <div class="overflow-x-auto rounded-xl border border-gray-200 bg-surfaceGray">
-                    <table class="w-full text-left border-collapse">
+                    <table class="w-full text-left border-collapse min-w-[700px]">
                         <thead>
                             <tr class="bg-white border-b border-gray-200 text-xs text-textMuted uppercase tracking-wider font-bold">
                                 <th class="py-4 px-5">Driver Name</th>
                                 <th class="py-4 px-5">Status / Role</th>
                                 <th class="py-4 px-5">Completed Trips</th>
                                 <th class="py-4 px-5">Total Earnings</th>
-                                <th class="py-4 px-5">Customer Reviews</th>
+                                <th class="py-4 px-5">Documents</th>
                                 <th class="py-4 px-5 text-center">Actions</th>
                             </tr>
                         </thead>
@@ -284,6 +290,22 @@
             </div>
 
         </main>
+    </div>
+
+    <!-- Document Modal -->
+    <div id="docModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="premium-card bg-white w-full max-w-lg p-6 rounded-2xl space-y-4 relative">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-lg text-emeraldPrimary">Driver Verification Documents</h3>
+                <button onclick="closeDocModal()" class="text-gray-500 hover:text-red-600 font-bold text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="docModalContent" class="space-y-3 text-sm">
+                <!-- Loaded dynamically -->
+            </div>
+            <div class="text-right pt-2">
+                <button onclick="closeDocModal()" class="px-4 py-2 bg-emeraldPrimary text-white rounded-xl text-xs font-bold">Close</button>
+            </div>
+        </div>
     </div>
 
     <!-- Firebase SDK Scripts & Logic -->
@@ -375,6 +397,7 @@
 
         async function loadDashboardData() {
             try {
+                const selectedDate = document.getElementById('reportDate').value;
                 const usersSnap = await getDocs(collection(db, "users"));
                 let driversHTML = "";
                 
@@ -386,7 +409,8 @@
                     const status = data.status || 'pending';
                     const earnings = data.total_earnings || 0.0;
                     const deliveries = data.completed_deliveries || 0;
-                    const rating = data.rating || '4.9 ★';
+                    const license = data.license_number || data.license || 'Not Provided';
+                    const idCard = data.id_card || data.cnic || 'Not Provided';
 
                     driversHTML += `
                         <tr class="hover:bg-emerald-50/50 transition duration-150">
@@ -398,7 +422,11 @@
                             </td>
                             <td class="py-4 px-5 font-semibold text-textMuted">${deliveries}</td>
                             <td class="py-4 px-5 font-black text-emeraldPrimary">$${earnings.toFixed(2)}</td>
-                            <td class="py-4 px-5 font-bold text-goldAccent">${rating}</td>
+                            <td class="py-4 px-5">
+                                <button onclick="viewDocuments('${name}', '${license}', '${idCard}')" class="px-3 py-1.5 bg-surfaceGray border border-gray-300 text-emeraldPrimary rounded-lg text-xs font-bold hover:bg-emeraldLight transition">
+                                    <i class="fa-solid fa-file-shield mr-1"></i> View Docs
+                                </button>
+                            </td>
                             <td class="py-4 px-5 text-center">
                                 ${status !== 'approved' ? `
                                     <button onclick="approveDriver('${uid}')" class="px-4 py-2 bg-emeraldPrimary text-white text-xs font-bold rounded-xl shadow-md hover:bg-emeraldDark hover:scale-105 transition">Approve</button>
@@ -414,26 +442,33 @@
 
                 const ordersSnap = await getDocs(collection(db, "orders"));
                 let totalSales = 0;
-                let totalExpenses = 45.00;
                 let carCount = 0, bikeCount = 0, foodCount = 0, parcelCount = 0, docCount = 0;
                 let completedOrdersCount = 0;
 
                 ordersSnap.forEach((orderDoc) => {
                     const order = orderDoc.data();
-                    totalSales += (order.fare || order.price || 15.00);
-                    completedOrdersCount++;
+                    const orderDate = order.date || (order.timestamp ? new Date(order.timestamp.seconds * 1000).toISOString().split('T')[0] : todayStr);
 
-                    const type = order.type || 'car';
-                    if (type === 'car') carCount++;
-                    else if (type === 'bike') bikeCount++;
-                    else if (type === 'food') foodCount++;
-                    else if (type === 'parcel') parcelCount++;
-                    else if (type === 'document') docCount++;
+                    if (orderDate === selectedDate) {
+                        totalSales += (order.fare || order.price || 0);
+                        completedOrdersCount++;
+
+                        const type = order.type || 'car';
+                        if (type === 'car') carCount++;
+                        else if (type === 'bike') bikeCount++;
+                        else if (type === 'food') foodCount++;
+                        else if (type === 'parcel') parcelCount++;
+                        else if (type === 'document') docCount++;
+                    }
                 });
+
+                // Expenses apply only if there are active orders/sales on that date, otherwise 0 to avoid negative confusion
+                let totalExpenses = totalSales > 0 ? 45.00 : 0.00;
+                let netProfit = totalSales - totalExpenses;
 
                 document.getElementById('metricSales').innerText = `$${totalSales.toFixed(2)}`;
                 document.getElementById('metricExpenses').innerText = `$${totalExpenses.toFixed(2)}`;
-                document.getElementById('metricProfit').innerText = `$${(totalSales - totalExpenses).toFixed(2)}`;
+                document.getElementById('metricProfit').innerText = `$${netProfit.toFixed(2)}`;
                 document.getElementById('metricOrders').innerText = completedOrdersCount;
 
                 document.getElementById('catCar').innerText = carCount;
@@ -446,6 +481,23 @@
                 console.error("Error loading dashboard data: ", e);
             }
         }
+
+        window.viewDocuments = function(name, license, idCard) {
+            const content = `
+                <p><strong>Driver Name:</strong> ${name}</p>
+                <p><strong>License Number:</strong> ${license}</p>
+                <p><strong>ID / CNIC Number:</strong> ${idCard}</p>
+                <div class="p-3 bg-surfaceGray rounded-xl border text-xs text-textMuted mt-2">
+                    <i class="fa-solid fa-circle-check text-emeraldPrimary mr-1"></i> Verification status synced securely with Firebase.
+                </div>
+            `;
+            document.getElementById('docModalContent').innerHTML = content;
+            document.getElementById('docModal').classList.remove('hidden');
+        };
+
+        window.closeDocModal = function() {
+            document.getElementById('docModal').classList.add('hidden');
+        };
 
         window.approveDriver = async function(uid) {
             try {
@@ -462,6 +514,10 @@
 
         window.fetchAnalyticsData = function() {
             loadDashboardData();
+        }
+
+        window.exportAuditPDF = function() {
+            window.print();
         }
     </script>
 </body>
