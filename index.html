@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xassida SN - Premium Emerald & Gold Command Center</title>
+    <title>Xassida SN - Command Center</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -74,7 +74,7 @@
                 <div class="w-16 h-16 bg-gradient-to-tr from-emeraldPrimary to-goldAccent rounded-2xl mx-auto flex items-center justify-center shadow-lg mb-4 text-white text-2xl font-bold">
                     <i class="fa-solid fa-shield-halved"></i>
                 </div>
-                <h1 class="text-2xl font-extrabold text-emeraldPrimary tracking-tight">Xassida SN Elite</h1>
+                <h1 class="text-2xl font-extrabold text-emeraldPrimary tracking-tight">Xassida SN</h1>
                 <p class="text-xs text-textMuted mt-1 font-medium">Secure Admin Management Suite</p>
             </div>
             
@@ -91,7 +91,11 @@
                     <label class="block text-xs font-bold uppercase tracking-wider text-textMuted mb-2">Password</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-emeraldPrimary"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" id="adminPassword" required value="admin123" placeholder="••••••••" class="w-full pl-11 pr-4 py-3.5 bg-surfaceGray border border-gray-200 rounded-xl focus:outline-none focus:border-emeraldPrimary text-sm font-medium text-textDark transition">
+                        <input type="password" id="adminPassword" required value="admin123" placeholder="••••••••" class="w-full pl-11 pr-12 py-3.5 bg-surfaceGray border border-gray-200 rounded-xl focus:outline-none focus:border-emeraldPrimary text-sm font-medium text-textDark transition">
+                        <!-- Eye Icon to toggle password visibility -->
+                        <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 pr-4 flex items-center text-textMuted hover:text-emeraldPrimary transition">
+                            <i id="eyeIcon" class="fa-solid fa-eye"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="flex items-center justify-between text-xs">
@@ -102,6 +106,9 @@
                     <span>Access Secure Dashboard</span>
                     <i class="fa-solid fa-arrow-right-long text-goldAccent"></i>
                 </button>
+                <div class="text-center pt-2">
+                    <span class="text-[11px] font-semibold text-textMuted tracking-wider">AlyssaWarner.co</span>
+                </div>
             </form>
 
             <!-- Forgot Password Form (Hidden by Default) -->
@@ -121,6 +128,9 @@
                     <span>Send Password Reset Link</span>
                     <i class="fa-solid fa-paper-plane text-white"></i>
                 </button>
+                <div class="text-center pt-2">
+                    <span class="text-[11px] font-semibold text-textMuted tracking-wider">AlyssaWarner.co</span>
+                </div>
             </form>
         </div>
     </div>
@@ -135,7 +145,7 @@
                 </div>
                 <div>
                     <h1 class="font-extrabold text-lg tracking-wide">Xassida SN Command Center</h1>
-                    <p class="text-xs text-emerald-100 font-medium"><i class="fa-solid fa-shield-check text-goldAccent mr-1"></i> Strict 100% Online Payment Policy Active</p>
+                    <p class="text-xs text-emerald-100 font-medium"><i class="fa-solid fa-shield-check text-goldAccent mr-1"></i> Strict 100% Online Payment Policy Active • AlyssaWarner.co</p>
                 </div>
             </div>
             <div class="flex items-center space-x-4">
@@ -298,6 +308,20 @@
         const todayStr = new Date().toISOString().split('T')[0];
         document.getElementById('reportDate').value = todayStr;
         document.getElementById('currentDateDisplay').innerText = new Date().toLocaleDateString();
+
+        window.togglePasswordVisibility = function() {
+            const passwordInput = document.getElementById('adminPassword');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        };
 
         window.showForgotPassword = function() {
             document.getElementById('loginForm').classList.add('hidden');
