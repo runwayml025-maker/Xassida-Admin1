@@ -441,7 +441,6 @@
                     const license = data.license_number || data.license || data.licence || 'Not Provided';
                     const idCard = data.id_card || data.cnic || data.id_number || 'Not Provided';
                     
-                    // Checking multiple possible field names for images in Firestore
                     const licenseImg = data.license_image || data.license_url || data.licence_img || data.license_photo || '';
                     const idImg = data.id_image || data.cnic_url || data.cnic_img || data.id_photo || '';
 
@@ -556,7 +555,7 @@
 
         window.saveDriverName = async function() {
             const uid = document.getElementById('editDriverUid').value;
-            const newName = document.getElementById('editDriverNameInput'].value;
+            const newName = document.getElementById('editDriverNameInput').value;
             if (!newName) return alert("Please enter a valid name.");
             try {
                 await updateDoc(doc(db, "users", uid), {
