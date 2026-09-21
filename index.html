@@ -63,6 +63,15 @@
             border: 1px solid rgba(153, 27, 27, 0.2);
         }
 
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(2deg); }
+        }
+
+        .floating-element {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #F4F7F5; }
         ::-webkit-scrollbar-thumb { background: #0A3A2A; border-radius: 4px; }
@@ -71,11 +80,37 @@
 <body class="min-h-screen flex flex-col selection:bg-goldAccent selection:text-white">
 
     <!-- LOGIN SCREEN -->
-    <div id="authScreen" class="fixed inset-0 bg-gradient-to-br from-emeraldPrimary via-emeraldDark to-textDark z-50 flex items-center justify-center p-4">
+    <div id="authScreen" class="fixed inset-0 bg-gradient-to-br from-emeraldPrimary via-emeraldDark to-textDark z-50 flex items-center justify-center p-4 overflow-hidden">
+        
+        <!-- Floating 3D Theme Elements from Reference Image -->
+        <div class="absolute top-10 left-10 floating-element hidden lg:flex items-center space-x-3 bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/20 text-white shadow-xl">
+            <i class="fa-solid fa-box text-goldAccent text-xl"></i>
+            <div>
+                <p class="text-xs font-bold">Package in transit</p>
+                <p class="text-[10px] text-emerald-200">Dakar -> Diourbel[cite: 12]</p>
+            </div>
+        </div>
+
+        <div class="absolute bottom-12 right-12 floating-element hidden lg:flex items-center space-x-3 bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/20 text-white shadow-xl" style="animation-delay: 2s;">
+            <i class="fa-solid fa-car text-goldAccent text-xl"></i>
+            <div>
+                <p class="text-xs font-bold">Ride Booked</p>
+                <p class="text-[10px] text-emerald-200">Driver nearby • 2 min[cite: 12]</p>
+            </div>
+        </div>
+
+        <div class="absolute top-1/4 right-16 floating-element hidden xl:block opacity-20 text-goldAccent text-6xl pointer-events-none">
+            <i class="fa-solid fa-truck-fast"></i>
+        </div>
+
+        <div class="absolute bottom-1/4 left-16 floating-element hidden xl:block opacity-20 text-emerald-300 text-5xl pointer-events-none" style="animation-delay: 1.5s;">
+            <i class="fa-solid fa-motorcycle"></i>
+        </div>
+
         <div class="absolute -top-32 -right-32 w-96 h-96 bg-goldAccent opacity-15 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-emerald-600 opacity-15 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div class="premium-card w-full max-w-md p-6 sm:p-8 rounded-3xl relative shadow-2xl border border-white/10">
+        <div class="premium-card w-full max-w-md p-6 sm:p-8 rounded-3xl relative shadow-2xl border border-white/10 z-10 bg-white/95 backdrop-blur-sm">
             <div class="text-center mb-8">
                 <div class="w-16 h-16 bg-gradient-to-tr from-emeraldPrimary to-goldAccent rounded-2xl mx-auto flex items-center justify-center shadow-lg mb-4 text-white text-2xl font-bold">
                     <i class="fa-solid fa-truck-fast text-goldLight"></i>
