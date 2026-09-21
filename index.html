@@ -57,6 +57,12 @@
             border: 1px solid rgba(10, 58, 42, 0.2);
         }
 
+        .red-badge {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid rgba(153, 27, 27, 0.2);
+        }
+
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #F4F7F5; }
         ::-webkit-scrollbar-thumb { background: #0A3A2A; border-radius: 4px; }
@@ -269,20 +275,21 @@
                     <span class="text-xs emerald-badge font-bold px-3.5 py-1.5 rounded-full">Real-time Firestore Sync</span>
                 </div>
                 <div class="overflow-x-auto rounded-xl border border-gray-200 bg-surfaceGray">
-                    <table class="w-full text-left border-collapse min-w-[700px]">
+                    <table class="w-full text-left border-collapse min-w-[750px]">
                         <thead>
                             <tr class="bg-white border-b border-gray-200 text-xs text-textMuted uppercase tracking-wider font-bold">
                                 <th class="py-4 px-5">Driver Name</th>
                                 <th class="py-4 px-5">Status / Role</th>
                                 <th class="py-4 px-5">Completed Trips</th>
                                 <th class="py-4 px-5">Total Earnings</th>
+                                <th class="py-4 px-5">Rating</th>
                                 <th class="py-4 px-5">Documents</th>
                                 <th class="py-4 px-5 text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="driversTableBody" class="text-sm divide-y divide-gray-200 bg-white">
                             <tr>
-                                <td colspan="6" class="py-8 text-center text-textMuted font-medium">Connecting to Firebase database...</td>
+                                <td colspan="7" class="py-8 text-center text-textMuted font-medium">Connecting to Firebase database...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -304,6 +311,25 @@
             </div>
             <div class="text-right pt-2">
                 <button onclick="closeDocModal()" class="px-4 py-2 bg-emeraldPrimary text-white rounded-xl text-xs font-bold">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Name Modal -->
+    <div id="nameModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="premium-card bg-white w-full max-w-sm p-6 rounded-2xl space-y-4 relative">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-base text-emeraldPrimary">Update Driver Name</h3>
+                <button onclick="closeNameModal()" class="text-gray-500 hover:text-red-600 font-bold"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <input type="hidden" id="editDriverUid">
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-textMuted mb-1">Driver Name / Number</label>
+                <input type="text" id="editDriverNameInput" class="w-full px-4 py-3 bg-surfaceGray border border-gray-300 rounded-xl text-sm font-bold text-textDark focus:outline-none focus:border-emeraldPrimary" placeholder="e.g. Driver #1 - Ali">
+            </div>
+            <div class="flex justify-end space-x-2 pt-2">
+                <button onclick="closeNameModal()" class="px-4 py-2 bg-gray-200 text-textDark rounded-xl text-xs font-bold">Cancel</button>
+                <button onclick="saveDriverName()" class="px-4 py-2 bg-emeraldPrimary text-white rounded-xl text-xs font-bold">Save Name</button>
             </div>
         </div>
     </div>
@@ -400,45 +426,52 @@
                 const selectedDate = document.getElementById('reportDate').value;
                 const usersSnap = await getDocs(collection(db, "users"));
                 let driversHTML = "";
+                let index = 1;
                 
                 usersSnap.forEach((docSnap) => {
                     const data = docSnap.data();
                     const uid = docSnap.id;
-                    const name = data.name || 'Unnamed Driver';
+                    const name = data.name || `Driver #${index} (Unnamed)`;
                     const role = data.role || 'driver';
                     const status = data.status || 'pending';
                     const earnings = data.total_earnings || 0.0;
                     const deliveries = data.completed_deliveries || 0;
+                    const ratingVal = data.rating_num || 4.9;
+                    const ratingStr = data.rating || `${ratingVal} ★`;
                     const license = data.license_number || data.license || 'Not Provided';
                     const idCard = data.id_card || data.cnic || 'Not Provided';
 
                     driversHTML += `
                         <tr class="hover:bg-emerald-50/50 transition duration-150">
-                            <td class="py-4 px-5 font-bold text-textDark">${name}</td>
+                            <td class="py-4 px-5 font-bold text-textDark flex items-center space-x-2">
+                                <span>${name}</span>
+                                <button onclick="openNameModal('${uid}', '${name.replace(/'/g, "\\'")}')" class="text-xs text-emeraldPrimary hover:underline"><i class="fa-solid fa-pen-to-square"></i></button>
+                            </td>
                             <td class="py-4 px-5">
-                                <span class="px-3 py-1 rounded-full text-xs font-bold ${status === 'approved' ? 'emerald-badge' : 'gold-badge'}">
+                                <span class="px-3 py-1 rounded-full text-xs font-bold ${status === 'approved' ? 'emerald-badge' : (status === 'terminated' ? 'red-badge' : 'gold-badge')}">
                                     ${status.toUpperCase()} (${role})
                                 </span>
                             </td>
                             <td class="py-4 px-5 font-semibold text-textMuted">${deliveries}</td>
                             <td class="py-4 px-5 font-black text-emeraldPrimary">$${earnings.toFixed(2)}</td>
+                            <td class="py-4 px-5 font-bold text-goldAccent">${ratingStr}</td>
                             <td class="py-4 px-5">
                                 <button onclick="viewDocuments('${name}', '${license}', '${idCard}')" class="px-3 py-1.5 bg-surfaceGray border border-gray-300 text-emeraldPrimary rounded-lg text-xs font-bold hover:bg-emeraldLight transition">
                                     <i class="fa-solid fa-file-shield mr-1"></i> View Docs
                                 </button>
                             </td>
-                            <td class="py-4 px-5 text-center">
+                            <td class="py-4 px-5 text-center space-x-2">
                                 ${status !== 'approved' ? `
-                                    <button onclick="approveDriver('${uid}')" class="px-4 py-2 bg-emeraldPrimary text-white text-xs font-bold rounded-xl shadow-md hover:bg-emeraldDark hover:scale-105 transition">Approve</button>
-                                ` : `
-                                    <span class="text-xs text-emeraldPrimary font-bold bg-emeraldLight px-3 py-1 rounded-lg border border-emerald-200">Verified Active</span>
-                                `}
+                                    <button onclick="approveDriver('${uid}')" class="px-3 py-1.5 bg-emeraldPrimary text-white text-xs font-bold rounded-xl shadow-md hover:bg-emeraldDark transition">Approve</button>
+                                ` : ''}
+                                <button onclick="terminateDriver('${uid}', '${name.replace(/'/g, "\\'")}')" class="px-3 py-1.5 bg-red-600 text-white text-xs font-bold rounded-xl shadow-md hover:bg-red-700 transition">Terminate</button>
                             </td>
                         </tr>
                     `;
+                    index++;
                 });
                 
-                document.getElementById('driversTableBody').innerHTML = driversHTML || `<tr><td colspan="6" class="py-8 text-center text-textMuted font-medium">No drivers found in database.</td></tr>`;
+                document.getElementById('driversTableBody').innerHTML = driversHTML || `<tr><td colspan="7" class="py-8 text-center text-textMuted font-medium">No drivers found in database.</td></tr>`;
 
                 const ordersSnap = await getDocs(collection(db, "orders"));
                 let totalSales = 0;
@@ -462,7 +495,6 @@
                     }
                 });
 
-                // Expenses apply only if there are active orders/sales on that date, otherwise 0 to avoid negative confusion
                 let totalExpenses = totalSales > 0 ? 45.00 : 0.00;
                 let netProfit = totalSales - totalExpenses;
 
@@ -499,6 +531,32 @@
             document.getElementById('docModal').classList.add('hidden');
         };
 
+        window.openNameModal = function(uid, currentName) {
+            document.getElementById('editDriverUid').value = uid;
+            document.getElementById('editDriverNameInput').value = currentName;
+            document.getElementById('nameModal').classList.remove('hidden');
+        };
+
+        window.closeNameModal = function() {
+            document.getElementById('nameModal').classList.add('hidden');
+        };
+
+        window.saveDriverName = async function() {
+            const uid = document.getElementById('editDriverUid').value;
+            const newName = document.getElementById('editDriverNameInput').value;
+            if (!newName) return alert("Please enter a valid name.");
+            try {
+                await updateDoc(doc(db, "users", uid), {
+                    name: newName
+                });
+                alert("Driver name updated successfully!");
+                closeNameModal();
+                loadDashboardData();
+            } catch (e) {
+                alert("Error updating name: " + e.message);
+            }
+        };
+
         window.approveDriver = async function(uid) {
             try {
                 await updateDoc(doc(db, "users", uid), {
@@ -510,15 +568,30 @@
             } catch (e) {
                 alert("Error approving driver: " + e.message);
             }
-        }
+        };
+
+        window.terminateDriver = async function(uid, name) {
+            if (confirm(`Kya aap waqai driver "${name}" ka account terminate karna chahte hain?`)) {
+                try {
+                    await updateDoc(doc(db, "users", uid), {
+                        status: 'terminated',
+                        identity_verified: false
+                    });
+                    alert("Driver account terminated successfully.");
+                    loadDashboardData();
+                } catch (e) {
+                    alert("Error terminating driver: " + e.message);
+                }
+            }
+        };
 
         window.fetchAnalyticsData = function() {
             loadDashboardData();
-        }
+        };
 
         window.exportAuditPDF = function() {
             window.print();
-        }
+        };
     </script>
 </body>
 </html>
