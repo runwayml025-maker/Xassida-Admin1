@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xassida SN - Premium Emerald & Gold Command Center</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emeraldPrimary: '#047857',
+                        emeraldDark: '#065F46',
+                        emeraldLight: '#ECFDF5',
+                        goldAccent: '#D97706',
+                        goldLight: '#FEF3C7',
+                        cleanWhite: '#FFFFFF',
+                        surfaceGray: '#F8FAFC',
+                        textDark: '#1E293B',
+                        textMuted: '#64748B'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; color: #1E293B; }
+        
+        .premium-card {
+            background: #FFFFFF;
+            border: 1px solid rgba(4, 120, 87, 0.12);
+            box-shadow: 0 10px 30px -5px rgba(4, 120, 87, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .premium-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 35px -10px rgba(4, 120, 87, 0.15);
+            border-color: #D97706;
+        }
+
+        .gold-badge {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            color: #92400E;
+            border: 1px solid rgba(217, 119, 6, 0.3);
+        }
+
+        .emerald-badge {
+            background: #ECFDF5;
+            color: #047857;
+            border: 1px solid rgba(4, 120, 87, 0.2);
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #F8FAFC; }
+        ::-webkit-scrollbar-thumb { background: #047857; border-radius: 4px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-goldAccent selection:text-white">
+
+    <!-- LOGIN SCREEN -->
+    <div id="authScreen" class="fixed inset-0 bg-gradient-to-br from-emeraldPrimary via-emeraldDark to-textDark z-50 flex items-center justify-center p-4">
+        <div class="absolute -top-32 -right-32 w-96 h-96 bg-goldAccent opacity-20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-emerald-300 opacity-15 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="premium-card w-full max-w-md p-8 rounded-3xl relative shadow-2xl border border-white/20">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-gradient-to-tr from-emeraldPrimary to-goldAccent rounded-2xl mx-auto flex items-center justify-center shadow-lg mb-4 text-white text-2xl font-bold">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h1 class="text-2xl font-extrabold text-emeraldPrimary tracking-tight">Xassida SN Elite</h1>
+                <p class="text-xs text-textMuted mt-1 font-medium">Secure Admin Management Suite</p>
+            </div>
+            
+            <form id="loginForm" onsubmit="handleAdminLogin(event)" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-textMuted mb-2">Admin Email</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-emeraldPrimary"><i class="fa-solid fa-envelope"></i></span>
+                        <input type="email" id="adminEmail" required placeholder="admin@xassidasn.com" class="w-full pl-11 pr-4 py-3.5 bg-surfaceGray border border-gray-200 rounded-xl focus:outline-none focus:border-emeraldPrimary text-sm font-medium text-textDark transition">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-textMuted mb-2">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-emeraldPrimary"><i class="fa-solid fa-lock"></i></span>
+                        <input type="password" id="adminPassword" required placeholder="••••••••" class="w-full pl-11 pr-4 py-3.5 bg-surfaceGray border border-gray-200 rounded-xl focus:outline-none focus:border-emeraldPrimary text-sm font-medium text-textDark transition">
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-4 bg-gradient-to-r from-emeraldPrimary to-emeraldDark text-white font-bold rounded-xl shadow-lg hover:shadow-emerald-700/30 hover:scale-[1.02] active:scale-[0.98] transition duration-200 flex items-center justify-center space-x-2 text-sm">
+                    <span>Access Secure Dashboard</span>
+                    <i class="fa-solid fa-arrow-right-long text-goldAccent"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div id="mainDashboard" class="hidden flex-1 flex flex-col">
+        <!-- Top Navbar -->
+        <header class="bg-emeraldPrimary text-white shadow-md px-8 py-4 flex justify-between items-center sticky top-0 z-40 border-b border-emeraldDark">
+            <div class="flex items-center space-x-3">
+                <div class="w-11 h-11 bg-white/10 rounded-2xl flex items-center justify-center text-goldAccent font-bold text-xl border border-white/20">
+                    <i class="fa-solid fa-truck-fast"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg tracking-wide">Xassida SN Command Center</h1>
+                    <p class="text-xs text-emerald-100 font-medium"><i class="fa-solid fa-shield-check text-goldAccent mr-1"></i> Strict 100% Online Payment Policy Active</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2 bg-black/15 px-4 py-2 rounded-xl border border-white/15 text-xs font-semibold text-emerald-50">
+                    <span class="w-2.5 h-2.5 rounded-full bg-goldAccent animate-pulse"></span>
+                    <span id="currentDateDisplay">Loading Date...</span>
+                </div>
+                <button onclick="handleLogout()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition shadow-md hover:scale-105 active:scale-95 flex items-center space-x-2">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Container -->
+        <main class="flex-1 p-8 max-w-7xl mx-auto w-full space-y-8">
+            
+            <!-- Date Filter & Quick Audit Bar -->
+            <div class="premium-card p-5 rounded-2xl flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center space-x-3">
+                    <label class="text-xs font-bold uppercase tracking-wider text-textMuted"><i class="fa-solid fa-calendar-days text-emeraldPrimary mr-2"></i> Audit Date:</label>
+                    <input type="date" id="reportDate" onchange="fetchAnalyticsData()" class="px-4 py-2.5 bg-surfaceGray border border-gray-200 rounded-xl text-sm font-bold text-textDark focus:outline-none focus:border-emeraldPrimary">
+                </div>
+                <div class="text-xs text-emerald-800 font-medium bg-emeraldLight px-4 py-2 rounded-xl border border-emerald-200">
+                    <i class="fa-solid fa-circle-info mr-1 text-emeraldPrimary"></i> Daily auto-reset enabled. Select past dates for historical profit & expense audits.
+                </div>
+            </div>
+
+            <!-- Financial Metrics Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Sales -->
+                <div class="premium-card p-6 rounded-2xl border-l-4 border-l-emeraldPrimary">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-textMuted">Total Online Sales</p>
+                            <h3 id="metricSales" class="text-3xl font-black text-emeraldPrimary mt-2">$0.00</h3>
+                        </div>
+                        <div class="p-3.5 bg-emeraldLight rounded-2xl text-emeraldPrimary"><i class="fa-solid fa-wallet text-xl"></i></div>
+                    </div>
+                    <p class="text-[11px] text-textMuted mt-4 font-semibold"><i class="fa-solid fa-shield-check text-emeraldPrimary mr-1"></i> Cash: $0.00 (Secured)</p>
+                </div>
+
+                <!-- Expenses -->
+                <div class="premium-card p-6 rounded-2xl border-l-4 border-l-red-500">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-textMuted">Total Expenses</p>
+                            <h3 id="metricExpenses" class="text-3xl font-black text-red-600 mt-2">$0.00</h3>
+                        </div>
+                        <div class="p-3.5 bg-red-50 rounded-2xl text-red-500"><i class="fa-solid fa-file-invoice-dollar text-xl"></i></div>
+                    </div>
+                    <p class="text-[11px] text-textMuted mt-4 font-semibold">Operational & Fuel Costs</p>
+                </div>
+
+                <!-- Net Profit -->
+                <div class="premium-card p-6 rounded-2xl border-l-4 border-l-goldAccent">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-textMuted">Net Profit</p>
+                            <h3 id="metricProfit" class="text-3xl font-black text-goldAccent mt-2">$0.00</h3>
+                        </div>
+                        <div class="p-3.5 bg-goldLight rounded-2xl text-goldAccent"><i class="fa-solid fa-chart-line text-xl"></i></div>
+                    </div>
+                    <p class="text-[11px] text-textMuted mt-4 font-semibold">Sales minus Expenses</p>
+                </div>
+
+                <!-- Completed Orders -->
+                <div class="premium-card p-6 rounded-2xl border-l-4 border-l-blue-600">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-textMuted">Completed Deliveries</p>
+                            <h3 id="metricOrders" class="text-3xl font-black text-blue-600 mt-2">0</h3>
+                        </div>
+                        <div class="p-3.5 bg-blue-50 rounded-2xl text-blue-600"><i class="fa-solid fa-box-open text-xl"></i></div>
+                    </div>
+                    <p class="text-[11px] text-textMuted mt-4 font-semibold">All Categories Combined</p>
+                </div>
+            </div>
+
+            <!-- Category Breakdown Grid -->
+            <div class="premium-card p-6 rounded-2xl">
+                <h3 class="text-base font-bold text-textDark mb-5 flex items-center">
+                    <i class="fa-solid fa-layer-group text-emeraldPrimary mr-2.5 text-lg"></i> Category Breakdown (Selected Date)
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="p-4 bg-surfaceGray rounded-xl border border-gray-200 text-center premium-card">
+                        <span class="text-xs text-textMuted font-bold uppercase">Car Rides</span>
+                        <h4 id="catCar" class="text-2xl font-black text-emeraldPrimary mt-1">0</h4>
+                    </div>
+                    <div class="p-4 bg-surfaceGray rounded-xl border border-gray-200 text-center premium-card">
+                        <span class="text-xs text-textMuted font-bold uppercase">Bike Rides</span>
+                        <h4 id="catBike" class="text-2xl font-black text-emeraldPrimary mt-1">0</h4>
+                    </div>
+                    <div class="p-4 bg-surfaceGray rounded-xl border border-gray-200 text-center premium-card">
+                        <span class="text-xs text-textMuted font-bold uppercase">Food Delivery</span>
+                        <h4 id="catFood" class="text-2xl font-black text-emeraldPrimary mt-1">0</h4>
+                    </div>
+                    <div class="p-4 bg-surfaceGray rounded-xl border border-gray-200 text-center premium-card">
+                        <span class="text-xs text-textMuted font-bold uppercase">Parcels</span>
+                        <h4 id="catParcel" class="text-2xl font-black text-goldAccent mt-1">0</h4>
+                    </div>
+                    <div class="p-4 bg-surfaceGray rounded-xl border border-gray-200 text-center premium-card">
+                        <span class="text-xs text-textMuted font-bold uppercase">Documents</span>
+                        <h4 id="catDoc" class="text-2xl font-black text-goldAccent mt-1">0</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Riders & Drivers Performance Section -->
+            <div class="premium-card p-6 rounded-2xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-base font-bold text-textDark flex items-center">
+                        <i class="fa-solid fa-users-gear text-emeraldPrimary mr-2.5 text-lg"></i> Riders & Drivers Performance & Feedback
+                    </h3>
+                    <span class="text-xs emerald-badge font-bold px-3.5 py-1.5 rounded-full">Real-time Firestore Sync</span>
+                </div>
+                <div class="overflow-x-auto rounded-xl border border-gray-200 bg-surfaceGray">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-white border-b border-gray-200 text-xs text-textMuted uppercase tracking-wider font-bold">
+                                <th class="py-4 px-5">Driver Name</th>
+                                <th class="py-4 px-5">Status / Role</th>
+                                <th class="py-4 px-5">Completed Trips</th>
+                                <th class="py-4 px-5">Total Earnings</th>
+                                <th class="py-4 px-5">Customer Reviews</th>
+                                <th class="py-4 px-5 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="driversTableBody" class="text-sm divide-y divide-gray-100 bg-white">
+                            <tr>
+                                <td colspan="6" class="py-8 text-center text-textMuted font-medium">Connecting to Firebase database...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Firebase SDK Scripts & Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD9t2XdqDfYbAmdIYQ2WMWNbBxdvyfdjjA",
+            authDomain: "xassida-sn-ba9e6.firebaseapp.com",
+            projectId: "xassida-sn-ba9e6",
+            storageBucket: "xassida-sn-ba9e6.firebasestorage.app",
+            messagingSenderId: "269291443652",
+            appId: "1:269291443652:web:6b25a61c151170d7964091"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const todayStr = new Date().toISOString().split('T')[0];
+        document.getElementById('reportDate').value = todayStr;
+        document.getElementById('currentDateDisplay').innerText = new Date().toLocaleDateString();
+
+        window.handleAdminLogin = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('adminEmail').value;
+            const pass = document.getElementById('adminPassword').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                document.getElementById('authScreen').classList.add('hidden');
+                document.getElementById('mainDashboard').classList.remove('hidden');
+                loadDashboardData();
+            } catch (err) {
+                alert("Login Failed: " + err.message);
+            }
+        };
+
+        window.handleLogout = async function() {
+            await signOut(auth);
+            document.getElementById('mainDashboard').classList.add('hidden');
+            document.getElementById('authScreen').classList.remove('hidden');
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('authScreen').classList.add('hidden');
+                document.getElementById('mainDashboard').classList.remove('hidden');
+                loadDashboardData();
+            }
+        });
+
+        async function loadDashboardData() {
+            try {
+                const usersSnap = await getDocs(collection(db, "users"));
+                let driversHTML = "";
+                
+                usersSnap.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const uid = docSnap.id;
+                    const name = data.name || 'Unnamed Driver';
+                    const role = data.role || 'driver';
+                    const status = data.status || 'pending';
+                    const earnings = data.total_earnings || 0.0;
+                    const deliveries = data.completed_deliveries || 0;
+                    const rating = data.rating || '4.9 ★';
+
+                    driversHTML += `
+                        <tr class="hover:bg-emerald-50/50 transition duration-150">
+                            <td class="py-4 px-5 font-bold text-textDark">${name}</td>
+                            <td class="py-4 px-5">
+                                <span class="px-3 py-1 rounded-full text-xs font-bold ${status === 'approved' ? 'emerald-badge' : 'gold-badge'}">
+                                    ${status.toUpperCase()} (${role})
+                                </span>
+                            </td>
+                            <td class="py-4 px-5 font-semibold text-textMuted">${deliveries}</td>
+                            <td class="py-4 px-5 font-black text-emeraldPrimary">$${earnings.toFixed(2)}</td>
+                            <td class="py-4 px-5 font-bold text-goldAccent">${rating}</td>
+                            <td class="py-4 px-5 text-center">
+                                ${status !== 'approved' ? `
+                                    <button onclick="approveDriver('${uid}')" class="px-4 py-2 bg-emeraldPrimary text-white text-xs font-bold rounded-xl shadow-md hover:bg-emeraldDark hover:scale-105 transition">Approve</button>
+                                ` : `
+                                    <span class="text-xs text-emeraldPrimary font-bold bg-emeraldLight px-3 py-1 rounded-lg border border-emerald-200">Verified Active</span>
+                                `}
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                document.getElementById('driversTableBody').innerHTML = driversHTML || `<tr><td colspan="6" class="py-8 text-center text-textMuted font-medium">No drivers found in database.</td></tr>`;
+
+                const ordersSnap = await getDocs(collection(db, "orders"));
+                let totalSales = 0;
+                let totalExpenses = 45.00;
+                let carCount = 0, bikeCount = 0, foodCount = 0, parcelCount = 0, docCount = 0;
+                let completedOrdersCount = 0;
+
+                ordersSnap.forEach((orderDoc) => {
+                    const order = orderDoc.data();
+                    totalSales += (order.fare || order.price || 15.00);
+                    completedOrdersCount++;
+
+                    const type = order.type || 'car';
+                    if (type === 'car') carCount++;
+                    else if (type === 'bike') bikeCount++;
+                    else if (type === 'food') foodCount++;
+                    else if (type === 'parcel') parcelCount++;
+                    else if (type === 'document') docCount++;
+                });
+
+                document.getElementById('metricSales').innerText = `$${totalSales.toFixed(2)}`;
+                document.getElementById('metricExpenses').innerText = `$${totalExpenses.toFixed(2)}`;
+                document.getElementById('metricProfit').innerText = `$${(totalSales - totalExpenses).toFixed(2)}`;
+                document.getElementById('metricOrders').innerText = completedOrdersCount;
+
+                document.getElementById('catCar').innerText = carCount;
+                document.getElementById('catBike').innerText = bikeCount;
+                document.getElementById('catFood').innerText = foodCount;
+                document.getElementById('catParcel').innerText = parcelCount;
+                document.getElementById('catDoc').innerText = docCount;
+
+            } catch (e) {
+                console.error("Error loading dashboard data: ", e);
+            }
+        }
+
+        window.approveDriver = async function(uid) {
+            try {
+                await updateDoc(doc(db, "users", uid), {
+                    status: 'approved',
+                    identity_verified: true
+                });
+                alert("Driver approved successfully!");
+                loadDashboardData();
+            } catch (e) {
+                alert("Error approving driver: " + e.message);
+            }
+        }
+
+        window.fetchAnalyticsData = function() {
+            loadDashboardData();
+        }
+    </script>
+</body>
+</html>
