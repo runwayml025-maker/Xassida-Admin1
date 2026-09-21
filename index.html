@@ -78,6 +78,7 @@
                 <p class="text-xs text-textMuted mt-1 font-medium">Secure Admin Management Suite</p>
             </div>
             
+            <!-- Login Form -->
             <form id="loginForm" onsubmit="handleAdminLogin(event)" class="space-y-5">
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-textMuted mb-2">Admin Email</label>
@@ -93,9 +94,32 @@
                         <input type="password" id="adminPassword" required placeholder="••••••••" class="w-full pl-11 pr-4 py-3.5 bg-surfaceGray border border-gray-200 rounded-xl focus:outline-none focus:border-emeraldPrimary text-sm font-medium text-textDark transition">
                     </div>
                 </div>
+                <div class="flex items-center justify-between text-xs">
+                    <span class="text-textMuted font-medium">Protected Gateway</span>
+                    <button type="button" onclick="showForgotPassword()" class="font-bold text-emeraldPrimary hover:text-goldAccent transition">Forgot Password?</button>
+                </div>
                 <button type="submit" class="w-full py-4 bg-gradient-to-r from-emeraldPrimary to-emeraldDark text-white font-bold rounded-xl shadow-lg hover:shadow-emerald-700/30 hover:scale-[1.02] active:scale-[0.98] transition duration-200 flex items-center justify-center space-x-2 text-sm">
                     <span>Access Secure Dashboard</span>
                     <i class="fa-solid fa-arrow-right-long text-goldAccent"></i>
+                </button>
+            </form>
+
+            <!-- Forgot Password Form (Hidden by Default) -->
+            <form id="forgotForm" onsubmit="handleForgotPassword(event)" class="space-y-5 hidden">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="text-xs font-bold uppercase tracking-wider text-textMuted">Reset Password</label>
+                        <button type="button" onclick="showLoginForm()" class="text-xs font-bold text-emeraldPrimary hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Login</button>
+                    </div>
+                    <p class="text-xs text-textMuted mb-4">Enter your registered admin email address below. We will send you a secure link to reset your password.</p>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-emeraldPrimary"><i class="fa-solid fa-envelope"></i></span>
+                        <input type="email" id="resetEmail" required placeholder="admin@xassidasn.com" class="w-full pl-11 pr-4 py-3.5 bg-surfaceGray border border-gray-200 rounded-xl focus:outline-none focus:border-emeraldPrimary text-sm font-medium text-textDark transition">
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-4 bg-gradient-to-r from-goldAccent to-amber-600 text-white font-bold rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] transition duration-200 flex items-center justify-center space-x-2 text-sm">
+                    <span>Send Password Reset Link</span>
+                    <i class="fa-solid fa-paper-plane text-white"></i>
                 </button>
             </form>
         </div>
@@ -255,7 +279,7 @@
     <!-- Firebase SDK Scripts & Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -275,6 +299,16 @@
         document.getElementById('reportDate').value = todayStr;
         document.getElementById('currentDateDisplay').innerText = new Date().toLocaleDateString();
 
+        window.showForgotPassword = function() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('forgotForm').classList.remove('hidden');
+        };
+
+        window.showLoginForm = function() {
+            document.getElementById('forgotForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+        };
+
         window.handleAdminLogin = async function(e) {
             e.preventDefault();
             const email = document.getElementById('adminEmail').value;
@@ -286,6 +320,18 @@
                 loadDashboardData();
             } catch (err) {
                 alert("Login Failed: " + err.message);
+            }
+        };
+
+        window.handleForgotPassword = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('resetEmail').value;
+            try {
+                await sendPasswordResetEmail(auth, email);
+                alert("Password reset link has been sent to your email (" + email + "). Please check your inbox or spam folder.");
+                showLoginForm();
+            } catch (err) {
+                alert("Error sending reset email: " + err.message);
             }
         };
 
